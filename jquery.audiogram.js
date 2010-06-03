@@ -17,14 +17,13 @@
 			cvWidth : 600,
 			xOffset : 40,
 			yOffset : 20,
-			leftUnmaskedIcon : '/matt/media/img/left.air.unmasked.png',
-			rightUnmaskedIcon : '/matt/media/img/right.air.unmasked.png',
 			newGraph : false,
 			backgroundColor : '#eeeeee',
 			activeEar : 'left',
 			activeTransducer : 'air',
 			editable : false,
 			removePoint : false,
+			imgPath : '/matt/media/img/',
 		};
 		
 		// Replace defautls with any user passed settings
@@ -48,143 +47,73 @@
 		var audiometricData = {
 			left : {
 				air : {
-					unmasked : {
-						t125  : false,
-						t180  : false,
-						t250  : false,
-						t375  : false,
-						t500  : false,
-						t750  : false,
-						t1k   : false,
-						t1500 : false,
-						t2k   : false,
-						t3k   : false,
-						t4k   : false,
-						t6k   : false,
-						t8k   : false,
-						t12k  : false,
-					},
-					masked : {
-						t125  : false,
-						t180  : false,
-						t250  : false,
-						t375  : false,
-						t500  : false,
-						t750  : false,
-						t1k   : false,
-						t1500 : false,
-						t2k   : false,
-						t3k   : false,
-						t4k   : false,
-						t6k   : false,
-						t8k   : false,
-						t12k  : false,
-					}
+					t125  : false,
+					t180  : false,
+					t250  : false,
+					t375  : false,
+					t500  : false,
+					t750  : false,
+					t1k   : false,
+					t1500 : false,
+					t2k   : false,
+					t3k   : false,
+					t4k   : false,
+					t6k   : false,
+					t8k   : false,
+					t12k  : false,
+				
 				},
 				bone : {
-					unmasked : {
-						t125  : false,
-						t180  : false,
-						t250  : false,
-						t375  : false,
-						t500  : false,
-						t750  : false,
-						t1k   : false,
-						t1500 : false,
-						t2k   : false,
-						t3k   : false,
-						t4k   : false,
-						t6k   : false,
-						t8k   : false,
-						t12k  : false,
-					},
-					masked : {
-						t125  : false,
-						t180  : false,
-						t250  : false,
-						t375  : false,
-						t500  : false,
-						t750  : false,
-						t1k   : false,
-						t1500 : false,
-						t2k   : false,
-						t3k   : false,
-						t4k   : false,
-						t6k   : false,
-						t8k   : false,
-						t12k  : false,
-					}
+					t125  : false,
+					t180  : false,
+					t250  : false,
+					t375  : false,
+					t500  : false,
+					t750  : false,
+					t1k   : false,
+					t1500 : false,
+					t2k   : false,
+					t3k   : false,
+					t4k   : false,
+					t6k   : false,
+					t8k   : false,
+					t12k  : false,
 				},
 			},
 			right : {
 				air : {
-					unmasked : {
-						t125  : false,
-						t180  : false,
-						t250  : false,
-						t375  : false,
-						t500  : false,
-						t750  : false,
-						t1k   : false,
-						t1500 : false,
-						t2k   : false,
-						t3k   : false,
-						t4k   : false,
-						t6k   : false,
-						t8k   : false,
-						t12k  : false,
-					},
-					masked : {
-						t125  : false,
-						t180  : false,
-						t250  : false,
-						t375  : false,
-						t500  : false,
-						t750  : false,
-						t1k   : false,
-						t1500 : false,
-						t2k   : false,
-						t3k   : false,
-						t4k   : false,
-						t6k   : false,
-						t8k   : false,
-						t12k  : false,
-					}
+					t125  : false,
+					t180  : false,
+					t250  : false,
+					t375  : false,
+					t500  : false,
+					t750  : false,
+					t1k   : false,
+					t1500 : false,
+					t2k   : false,
+					t3k   : false,
+					t4k   : false,
+					t6k   : false,
+					t8k   : false,
+					t12k  : false,
+				
 				},
 				bone : {
-					unmasked : {
-						t125  : false,
-						t180  : false,
-						t250  : false,
-						t375  : false,
-						t500  : false,
-						t750  : false,
-						t1k   : false,
-						t1500 : false,
-						t2k   : false,
-						t3k   : false,
-						t4k   : false,
-						t6k   : false,
-						t8k   : false,
-						t12k  : false,
-					},
-					masked : {
-						t125  : false,
-						t180  : false,
-						t250  : false,
-						t375  : false,
-						t500  : false,
-						t750  : false,
-						t1k   : false,
-						t1500 : false,
-						t2k   : false,
-						t3k   : false,
-						t4k   : false,
-						t6k   : false,
-						t8k   : false,
-						t12k  : false,
-					}
-				}
+					t125  : false,
+					t180  : false,
+					t250  : false,
+					t375  : false,
+					t500  : false,
+					t750  : false,
+					t1k   : false,
+					t1500 : false,
+					t2k   : false,
+					t3k   : false,
+					t4k   : false,
+					t6k   : false,
+					t8k   : false,
+					t12k  : false,
+				},
 			},
 			soundfield : {
 				unaided : {
@@ -246,19 +175,43 @@
 		// Images to be used for audiometric data points
 		var icon = {
 			left : {
-				air : new Image(),
-				bone : new Image(),
+				air : {
+					unmasked : new Image(),
+					masked : new Image()
+				},
+				bone : {
+					unmasked : new Image(),
+					masked : new Image()
+				}
 			},
 			right : {
-				air: new Image(),
-				bone : new Image(),
+				air : {
+					unmasked : new Image(),
+					masked : new Image()
+				},
+				bone : {
+					unmasked : new Image(),
+					masked : new Image()
+				}
 			},
+			soundfield : {
+				unaided : new Image(),
+				aided : new Image(),
+				ci : new Image()
+			}
 		};
 		
-		icon.left.air.src  = option.leftUnmaskedIcon;
-		icon.right.air.src = option.rightUnmaskedIcon;
-		icon.left.bone.src = '/matt/media/img/left.bone.unmasked.png';
-		icon.right.bone.src = '/matt/media/img/right.bone.unmasked.png';
+		icon.left.air.unmasked.src   = imgPath + 'left.air.unmasked.png';
+		icon.left.air.masked.src     = imgPath + 'left.air.masked.png';
+		icon.right.air.unmasked.src  = imgPath + 'right.air.unmasked.png';
+		icon.right.air.masked.src    = imgPath + 'right.air.masked.png';
+		icon.left.bone.unmasked.src  = imgPath + 'left.bone.unmasked.png';
+		icon.left.bone.masked.src    = imgPath + 'left.bone.masked.png';
+		icon.right.bone.unmasked.src = imgPath + 'right.bone.unmasked.png';
+		icon.right.bone.masked.src   = imgPath + 'right.bone.unmasked.png';
+		icon.soundfield.unaided.src  = imgPath + 'soundfield.unaided.png';
+		icon.soundfield.aided.src    = imgPath + 'soundfield.aided.png';
+		icon.soundfield.ci.src       = imgPath + 'soundfield.ci.png';
 		
 		/**
 		 * Canvas object handles drawing everything except data points
@@ -564,13 +517,15 @@
 				// Iterating through each level of our audiometricData object
 				$.each(audiometricData, function(ear) {
 					$.each(audiometricData[ear], function(transducer) {
-						$.each(audiometricData[ear][transducer], function(frequency, threshold) {
-							// Don't plot any non-existant data points
-							if (threshold !== false) {
-								var coords = thresholdToXY(frequency, threshold);
-								Canvas.plot(coords.x, coords.y, ear, transducer);
-							}
-						});
+						if (ear != 'soundfield') {
+							$.each(audiometricData[ear][transducer], function(frequency, threshold) {
+								// Don't plot any non-existant data points
+								if (threshold !== false) {
+									var coords = thresholdToXY(frequency, threshold);
+									Canvas.plot(coords.x, coords.y, ear, transducer);
+								}
+							});
+						}
 					});
 				});
 			};
