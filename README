@@ -1,0 +1,5 @@
+jQuery Audiogram plugin
+
+Takes a html table with audiometric thresholds and uses the html5 canvas to display an actual audiogram.  Eventually....
+
+Currently, it's in a semi-working state, but there is no support yet for maksed thresholds or any sort of sound field testing.
