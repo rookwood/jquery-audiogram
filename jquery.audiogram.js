@@ -177,41 +177,29 @@
 			left : {
 				air : {
 					unmasked : new Image(),
-					masked : new Image()
+					masked   : new Image()
 				},
 				bone : {
 					unmasked : new Image(),
-					masked : new Image()
+					masked   : new Image()
 				}
 			},
 			right : {
 				air : {
 					unmasked : new Image(),
-					masked : new Image()
+					masked   : new Image()
 				},
 				bone : {
 					unmasked : new Image(),
-					masked : new Image()
+					masked   : new Image()
 				}
 			},
 			soundfield : {
 				unaided : new Image(),
-				aided : new Image(),
-				ci : new Image()
+				aided   : new Image(),
+				ci      : new Image()
 			}
 		};
-		
-		icon.left.air.unmasked.src   = imgPath + 'left.air.unmasked.png';
-		icon.left.air.masked.src     = imgPath + 'left.air.masked.png';
-		icon.right.air.unmasked.src  = imgPath + 'right.air.unmasked.png';
-		icon.right.air.masked.src    = imgPath + 'right.air.masked.png';
-		icon.left.bone.unmasked.src  = imgPath + 'left.bone.unmasked.png';
-		icon.left.bone.masked.src    = imgPath + 'left.bone.masked.png';
-		icon.right.bone.unmasked.src = imgPath + 'right.bone.unmasked.png';
-		icon.right.bone.masked.src   = imgPath + 'right.bone.unmasked.png';
-		icon.soundfield.unaided.src  = imgPath + 'soundfield.unaided.png';
-		icon.soundfield.aided.src    = imgPath + 'soundfield.aided.png';
-		icon.soundfield.ci.src       = imgPath + 'soundfield.ci.png';
 		
 		/**
 		 * Canvas object handles drawing everything except data points
@@ -602,15 +590,48 @@
 			Canvas.draw();
 			
 			// Make sure our image icons are loaded before we try to plot
-			$(icon.left.air).load(function() {
-				$(icon.right.air).load(function() {
-					$(icon.left.bone).load(function() {
-						$(icon.right.bone).load(function() {
-							Data.plot();
-						});
-					});
-				});
+			function collected(count, fn) {
+				console.log('image loaded: ' + this);
+				var loaded = 0;
+				return function() {
+					// Trigger condition - once all images are loaded and trigger is reached, run the callback function
+					if (++loaded === count) {
+						fn();
+					} 
+				}
+			}
+			
+			var imgLoaded = collected(12, function() {
+				Data.plot();
 			});
+			
+			// Must bind onLoad event before declaring source for it to fire reliably
+			$(icon.left.air.unmasked).load(function() {imgLoaded();});
+			$(icon.left.air.masked).load(function() {imgLoaded();});
+			$(icon.right.air.unmasked).load(function() {imgLoaded();});
+			$(icon.right.air.masked).load(function() {imgLoaded();});
+			$(icon.left.bone.unmasked).load(function() {imgLoaded();});
+			$(icon.left.bone.masked).load(function() {imgLoaded();});
+			$(icon.right.bone.unmasked).load(function() {imgLoaded();});
+			$(icon.right.bone.masked).load(function() {imgLoaded();});
+			$(icon.soundfield.unaided).load(function() {imgLoaded();});
+			$(icon.soundfield.aided).load(function() {imgLoaded();});
+			$(icon.soundfield.ci).load(function() {imgLoaded();});
+		
+			icon.left.air.unmasked.src   = option.imgPath + 'left.air.unmasked.png';
+			icon.left.air.masked.src     = option.imgPath + 'left.air.masked.png';
+			icon.right.air.unmasked.src  = option.imgPath + 'right.air.unmasked.png';
+			icon.right.air.masked.src    = option.imgPath + 'right.air.masked.png';
+			icon.left.bone.unmasked.src  = option.imgPath + 'left.bone.unmasked.png';
+			icon.left.bone.masked.src    = option.imgPath + 'left.bone.masked.png';
+			icon.right.bone.unmasked.src = option.imgPath + 'right.bone.unmasked.png';
+			icon.right.bone.masked.src   = option.imgPath + 'right.bone.unmasked.png';
+			icon.soundfield.unaided.src  = option.imgPath + 'soundfield.unaided.png';
+			icon.soundfield.aided.src    = option.imgPath + 'soundfield.aided.png';
+			icon.soundfield.ci.src       = option.imgPath + 'soundfield.ci.png';
+
+			// Trigger condition - will run Data.plot() after all images have loaded
+			imgLoaded();
 			
 			if (option.editable) {
 				// Click event handler
