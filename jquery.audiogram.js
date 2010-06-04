@@ -391,15 +391,22 @@
 				 * @param  object   image to be drawn
 				 * @return void
 				 **/
-				plot : function(x, y, ear, transducer) {	
-					var img = icon[ear][transducer];
+				plot : function(x, y, ear, transducer, masking) {	
+					if (ear != 'soundfield') {
+						var img = icon[ear][transducer][(masking) ? 'masked' : 'unmasked')];
+					}
+					else {
+						var img = icon[ear][transducer];
+					}
+					
 					// Don't draw anything that would be off the grid
 					if (y < (option.audiogramHeight - option.yOffset) && x > option.xOffset - 5) {
 						// extra x - 5 because I suck at making images centered in photoshop
 						ctx.drawImage(img, x - (img.width / 2) - 4, y - (img.height / 2));
 					}
 					
-					if (transducer == 'air') {
+					// TODO fix this to add suport for black lines for sf
+					if (transducer == 'air' || transducer == 'soundfield') {
 						dataLine(x, y, (ear == 'right') ? 'd00000' : '0000d0');
 					}
 				},
@@ -505,15 +512,27 @@
 				// Iterating through each level of our audiometricData object
 				$.each(audiometricData, function(ear) {
 					$.each(audiometricData[ear], function(transducer) {
-						if (ear != 'soundfield') {
-							$.each(audiometricData[ear][transducer], function(frequency, threshold) {
-								// Don't plot any non-existant data points
-								if (threshold !== false) {
-									var coords = thresholdToXY(frequency, threshold);
-									Canvas.plot(coords.x, coords.y, ear, transducer);
+						$.each(audiometricData[ear][transducer], function(frequency, threshold) {						
+							
+							// Don't plot any non-existant data points
+							if (threshold !== false) {
+								
+								// If not sound field testing, test for masked thresholds
+								if (ear != 'soundfield') {
+									
+									// Is this a masked threshold?
+									var masking = (theshold.match.(/\-m$/)) ? true : false;
+									
+									threshold = threshold.split('-')[0];
 								}
-							});
-						}
+								else {
+									var masking = false;
+								}
+								
+								var coords = thresholdToXY(frequency, threshold);
+								Canvas.plot(coords.x, coords.y, ear, transducer, masking);
+							}
+						});
 					});
 				});
 			};
