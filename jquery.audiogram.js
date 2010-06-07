@@ -427,18 +427,27 @@
 				// Iterate through each table row
 				$('#'+dataSource+' > tbody > tr').each(function() {
 					
+					// Store a reference to the row to save on DOM traversal
+					var cells = $(this).children();
+					
 					// The first cell is the frequency, the rest are our data
-					frequency = $($(this).children().get(0)).text();
-					rightAir  = $($(this).children().get(1)).text();
-					rightBone = $($(this).children().get(2)).text();
-					leftAir   = $($(this).children().get(3)).text();
-					leftBone  = $($(this).children().get(4)).text();
+					var frequency = $(cells.get(0)).text(),
+					    rightAir  = $(cells.get(1)).text(),
+					    rightBone = $(cells.get(2)).text(),
+					    leftAir   = $(cells.get(3)).text(),
+					    leftBone  = $(cells.get(4)).text(),
+					    sfua      = $(cells.get(5)).text(),
+					    sfa       = $(cells.get(6)).text(),
+					    sfci      = $(cells.get(7)).text();
 					
 					// If no data, the cell text will be "false" - otherwise, put the number in our data object
-					audiometricData.right.air[frequency]  = (rightAir  == 'false') ? false : rightAir;
-					audiometricData.right.bone[frequency] = (rightBone == 'false') ? false : rightBone;
-					audiometricData.left.air[frequency]   = (leftAir   == 'false') ? false : leftAir;
-					audiometricData.left.bone[frequency]  = (leftBone  == 'false') ? false : leftBone;
+					audiometricData.right.air[frequency]          = (rightAir  == 'false') ? false : rightAir;
+					audiometricData.right.bone[frequency]         = (rightBone == 'false') ? false : rightBone;
+					audiometricData.left.air[frequency]           = (leftAir   == 'false') ? false : leftAir;
+					audiometricData.left.bone[frequency]          = (leftBone  == 'false') ? false : leftBone;
+					audiometricData.soundfield.unaided[frequency] = (sfua      == 'false') ? false : sfua;
+					audiometricData.soundfield.aided[frequency]   = (sfa       == 'false') ? false : sfa;
+					audiometricData.soundfield.ci[frequency]      = (sfci      == 'false') ? false : sfci;
 				});
 			};
 			
@@ -463,8 +472,8 @@
 				    quadrantX = parseInt((x % sizex) / (sizex / 2)),
 				    quadrantY = parseInt((y % sizey) / (sizey / 2)),
 				    
-				    x1 = (iX + quadrantX) * sizex, // + option.xOffset;
-				    y1 = (iY + quadrantY) * sizey; // + option.yOffset;
+				    x1 = (iX + quadrantX) * sizex,
+				    y1 = (iY + quadrantY) * sizey;
 				    
 				return {x : x1, y : y1};
 			};
@@ -610,7 +619,6 @@
 			
 			// Make sure our image icons are loaded before we try to plot
 			function collected(count, fn) {
-				console.log('image loaded: ' + this);
 				var loaded = 0;
 				return function() {
 					// Trigger condition - once all images are loaded and trigger is reached, run the callback function
@@ -620,11 +628,13 @@
 				}
 			}
 			
+			// Function called each time one of the icon images is loaded; Data.plot() called once the count arguemnt is reached
 			var imgLoaded = collected(12, function() {
 				Data.plot();
 			});
 			
-			// Must bind onLoad event before declaring source for it to fire reliably
+			// Must bind .load event before declaring source for it to fire reliably
+			// Using jQuery here to compensate for the vanilla load event not firing for cached images
 			$(icon.left.air.unmasked).load(function() {imgLoaded();});
 			$(icon.left.air.masked).load(function() {imgLoaded();});
 			$(icon.right.air.unmasked).load(function() {imgLoaded();});
@@ -636,7 +646,8 @@
 			$(icon.soundfield.unaided).load(function() {imgLoaded();});
 			$(icon.soundfield.aided).load(function() {imgLoaded();});
 			$(icon.soundfield.ci).load(function() {imgLoaded();});
-		
+
+			// Now assign image sources
 			icon.left.air.unmasked.src   = option.imgPath + 'left.air.unmasked.png';
 			icon.left.air.masked.src     = option.imgPath + 'left.air.masked.png';
 			icon.right.air.unmasked.src  = option.imgPath + 'right.air.unmasked.png';
@@ -657,6 +668,7 @@
 				// Click event handler
 				$(canvas).bind('click', function(e) {
 					
+					// (x, y) of mouse cursor at click; compensated to get coordinates relative to canvas's (0, 0)
 					var x = e.clientX - canvas.offsetLeft,
 						y = e.clientY - canvas.offsetTop; 
 					
@@ -686,6 +698,8 @@
 				$('#button_save').click(function() {
 					Data.save();
 				});
+				
+				// TODO: add handling for bone, sf, and masking
 			}
 		}
 		
