@@ -672,8 +672,8 @@
 				$(canvas).bind('click', function(e) {
 					
 					// (x, y) of mouse cursor at click; compensated to get coordinates relative to canvas's (0, 0)
-					var x = e.clientX - canvas.offsetLeft,
-						y = e.clientY - canvas.offsetTop; 
+					var x = e.clientX - canvas.offsetLeft + window.pageXOffset,
+						y = e.clientY - canvas.offsetTop + window.pageYOffset; 
 					
 					// If on the audiogram
 					if (x <= option.audiogramWidth + option.xOffset && y <= option.audiogramHeight - option.yOffset) {
