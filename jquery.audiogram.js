@@ -23,7 +23,7 @@
 			activeTransducer : 'air',
 			editable : false,
 			removePoint : false,
-			imgPath : '/matt/media/img/',
+			imgPath : '/matt/media/img/audiogram/',
 		};
 		
 		// Replace defautls with any user passed settings
@@ -393,7 +393,7 @@
 				 **/
 				plot : function(x, y, ear, transducer, masking) {	
 					if (ear != 'soundfield') {
-						var img = icon[ear][transducer][(masking) ? 'masked' : 'unmasked')];
+						var img = icon[ear][transducer][(masking) ? 'masked' : 'unmasked'];
 					}
 					else {
 						var img = icon[ear][transducer];
@@ -521,7 +521,7 @@
 								if (ear != 'soundfield') {
 									
 									// Is this a masked threshold?
-									var masking = (theshold.match.(/\-m$/)) ? true : false;
+									var masking = (threshold.match(/\-m$/)) ? true : false;
 									
 									threshold = threshold.split('-')[0];
 								}
@@ -652,6 +652,7 @@
 			// Trigger condition - will run Data.plot() after all images have loaded
 			imgLoaded();
 			
+			// Are we allowed to edit this?
 			if (option.editable) {
 				// Click event handler
 				$(canvas).bind('click', function(e) {
