@@ -348,7 +348,7 @@
 					current.y = y;
 				}
 				else {
-					// Using $.extend because javascript passes objects by reference making cloning difficult
+					// Using $.extend because javascript passes objects by reference making cloning and then modifying difficult
 					previous = $.extend({}, current);
 					current.x = x;
 					current.y = y;
@@ -406,8 +406,11 @@
 					}
 					
 					// TODO fix this to add suport for black lines for sf
-					if (transducer == 'air' || transducer == 'soundfield') {
+					if (transducer == 'air') {
 						dataLine(x, y, (ear == 'right') ? 'd00000' : '0000d0');
+					}
+					else if (transducer == 'unaided' || transducer == 'aided' || transducer == 'ci') {
+						dataLine(x, y, '000000');
 					}
 				},
 			};
