@@ -19,13 +19,17 @@
 			yOffset : 20,
 			newGraph : false,
 			backgroundColor : '#eeeeee',
-			activeEar : 'left',
-			activeTransducer : 'air',
 			editable : false,
-			removePoint : false,
 			imgPath : '/matt/media/img/audiogram/',
 		};
 		
+		var selection = {
+			ear : 'right',
+			transducer : 'air',
+			masking : false,
+			addPoint : 'true'
+			
+		}
 		// Replace defautls with any user passed settings
 		var option = $.extend(defaults, settings);
 		
@@ -405,7 +409,7 @@
 						ctx.drawImage(img, x - (img.width / 2) - 4, y - (img.height / 2));
 					}
 					
-					// TODO fix this to add suport for black lines for sf
+					// Draw ear appropriate color for left/right (air) or black for sound field
 					if (transducer == 'air') {
 						dataLine(x, y, (ear == 'right') ? 'd00000' : '0000d0');
 					}
@@ -494,8 +498,14 @@
 					sizey = option.audiogramHeight / horizontalLines,
 					sizex = option.audiogramWidth / verticalLines;
 				
-				audiometricData[option.activeEar][option.activeTransducer][frequencies[Math.round((x / sizex) - 1)]] =
-				    (option.removePoint) ? false : thresholds[Math.round((y / sizey) - 1)];
+				console.log(selection.ear + ' | ' + selection.transducer + ' | ' + selection.masking);
+				
+				var maskTag = (selection.masking) ? '-m' : '';
+				
+				console.log(maskTag);
+				
+				audiometricData[selection.ear][selection.transducer][frequencies[Math.round((x / sizex) - 1)]] =
+				    (selection.addPoint) ?  thresholds[Math.round((y / sizey) - 1)] + maskTag : false;
 			};
 			
 			/**
@@ -615,6 +625,95 @@
 		}(); // End Data
 		
 		/**
+		 * Handles event binding
+		 **/
+		var Events = function() {
+			return {
+				bind : function() {
+					// Click event handler
+					$(canvas).bind('click', function(e) {
+						
+						// (x, y) of mouse cursor at click; compensated to get coordinates relative to canvas's (0, 0)
+						var x = e.clientX - canvas.offsetLeft + window.pageXOffset,
+							y = e.clientY - canvas.offsetTop  + window.pageYOffset; 
+						
+						// If on the audiogram
+						if (x <= option.audiogramWidth + option.xOffset && y <= option.audiogramHeight - option.yOffset) {
+							// Clear the board
+							Canvas.draw();
+							
+							// Record and draw the data
+							Data.plot(x, y);
+						}
+					});
+					
+					// Ear & transducer selectors
+					$('#button_left').click(function() {
+						selection.ear = 'left';
+					});
+					
+					$('#button_right').click(function() {
+						selection.ear = 'right';
+					});
+					
+					// Test button for whatever I need to check at the moment
+					$('#button_test').click(function() {
+						selection.addPoint = (selection.addPoint) ? false : true;
+					});
+					
+					$('#button_save').click(function() {
+						Data.save();
+					});
+					
+					$('#button_air').click(function() {
+						selection.transducer = 'air';
+						if (selection.ear != 'left' && selection.ear != 'right') {
+							alert('changing');
+							selection.ear = 'left';
+						}
+					});
+					
+					$('#button_bone').click(function() {
+						selection.transducer = 'bone';
+						if (selection.ear != 'left' && selection.ear != 'right') {
+							selection.ear = 'left';
+						}					
+					});
+					
+					$('#button_soundfield').click(function() {
+						selection.ear = 'soundfield';
+						if (selection.transducer != 'unadied' && selection.transducer != 'aided' && selection.transducer != 'ci') {
+							selection.transducer = 'unaided';
+						}
+					});
+					
+					$('#button_unaided').click(function() {
+						selection.ear = 'soundfield';
+						selection.transducer = 'unaided';
+					});
+					
+					$('#button_aided').click(function() {
+						selection.ear = 'soundfield';
+						selection.transducer = 'aided';
+					});
+					
+					$('#button_ci').click(function() {
+						selection.ear = 'soundfield';
+						selection.transducer = 'ci';
+					});
+					
+					$('#button_unmasked').click(function() {
+						selection.masking = false;
+					});
+
+					$('#button_masked').click(function() {
+						selection.masking = true;
+					});				
+				}
+			};
+		}(); // End Events
+		
+		/**
 		 * Starts the progam and adds event handlers
 		 **/
 		function main() {
@@ -658,7 +757,7 @@
 			icon.left.bone.unmasked.src  = option.imgPath + 'left.bone.unmasked.png';
 			icon.left.bone.masked.src    = option.imgPath + 'left.bone.masked.png';
 			icon.right.bone.unmasked.src = option.imgPath + 'right.bone.unmasked.png';
-			icon.right.bone.masked.src   = option.imgPath + 'right.bone.unmasked.png';
+			icon.right.bone.masked.src   = option.imgPath + 'right.bone.masked.png';
 			icon.soundfield.unaided.src  = option.imgPath + 'soundfield.unaided.png';
 			icon.soundfield.aided.src    = option.imgPath + 'soundfield.aided.png';
 			icon.soundfield.ci.src       = option.imgPath + 'soundfield.ci.png';
@@ -666,43 +765,13 @@
 			// Trigger condition - will run Data.plot() after all images have loaded
 			imgLoaded();
 			
-			// Are we allowed to edit this?
+			// Are we allowed to edit this audiogram?
 			if (option.editable) {
-				// Click event handler
-				$(canvas).bind('click', function(e) {
-					
-					// (x, y) of mouse cursor at click; compensated to get coordinates relative to canvas's (0, 0)
-					var x = e.clientX - canvas.offsetLeft + window.pageXOffset,
-						y = e.clientY - canvas.offsetTop + window.pageYOffset; 
-					
-					// If on the audiogram
-					if (x <= option.audiogramWidth + option.xOffset && y <= option.audiogramHeight - option.yOffset) {
-						// Clear the board
-						Canvas.draw();
-						
-						// Record and draw the data
-						Data.plot(x, y);
-					}
-				});
-				
-				// Ear & transducer selectors
-				$('#button_left').click(function() {
-					option.activeEar = 'left';
-				});
-				
-				$('#button_right').click(function() {
-					option.activeEar = 'right';
-				});
-				
-				// Test button for whatever I need to check at the moment
-				$('#button_test').click(function() {
-					option.removePoint = (option.removePoint) ? false : true;
-				});
-				$('#button_save').click(function() {
-					Data.save();
-				});
-				
-				// TODO: add handling for bone, sf, and masking
+				// Bind all events
+				Events.bind();
+			}
+			else {
+				$('section#buttons').hide();
 			}
 		}
 		
