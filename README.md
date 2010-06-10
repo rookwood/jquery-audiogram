@@ -12,6 +12,8 @@ You need a html table with the proper form with threshold data (see below).  All
 Data table setup
 ============
 
+The full thing can be found in the sample index.php file.
+
 Here is an abbreviated sample:
 
 	<table id="01496673">
