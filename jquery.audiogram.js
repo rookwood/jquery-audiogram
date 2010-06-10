@@ -4,7 +4,7 @@
  * by Matt Hollis - contact via my name at gmail.com
  *
  * Copyright (c) 2010 Matt Hollis
- * Version: 0.1.1-2010.06.02
+ * Version: 0.1.1-2010.06.10
  *
  * --------------------------------------------------------------------
  **/
@@ -628,6 +628,84 @@
 		 * Handles event binding
 		 **/
 		var Events = function() {
+		
+			var controls = function() {
+				$('#button_ear_specific').click(function() {
+					$('section#buttons_soundfield').fadeOut(500, function() {
+						$('section#buttons_ear_specific').fadeIn(500);
+					});
+					
+					if (selection.ear != 'left' && selection.ear != 'right') {
+						selection.ear = 'left';
+					}
+					
+					if (selection.transducer != 'air' && selection.transducer != 'bone') {
+						selection.transducer = 'air';
+					}
+				});
+				
+				$('#button_soundfield').click(function() {
+					$('section#buttons_ear_specific').fadeOut(500, function() {
+						$('section#buttons_soundfield').fadeIn(500);
+					});
+					
+					selection.ear = 'soundfield';
+					selection.transducer = 'unaided';
+				});
+					
+				// Test button for whatever I need to check at the moment
+				$('#button_test').click(function() {
+					selection.addPoint = (selection.addPoint) ? false : true;
+				});
+				
+				$('#button_save').click(function() {
+					Data.save();
+				});
+			}
+			
+			var earSpecificButtons = function() {
+				$('#button_left').click(function() {
+					selection.ear = 'left';
+				});
+				
+				$('#button_right').click(function() {
+					selection.ear = 'right';
+				});
+				
+				$('#button_air').click(function() {
+					selection.transducer = 'air';
+				});
+				
+				$('#button_bone').click(function() {
+					selection.transducer = 'bone';
+				});
+				
+				$('#button_unmasked').click(function() {
+					selection.masking = false;
+				});
+
+				$('#button_masked').click(function() {
+					selection.masking = true;
+				});			
+			}			
+			
+			var soundfieldButtons = function() {
+				$('#button_unaided').click(function() {
+					selection.ear = 'soundfield';
+					selection.transducer = 'unaided';
+				});
+				
+				$('#button_aided').click(function() {
+					selection.ear = 'soundfield';
+					selection.transducer = 'aided';
+				});
+				
+				$('#button_ci').click(function() {
+					selection.ear = 'soundfield';
+					selection.transducer = 'ci';
+				});
+			}
+			
 			return {
 				bind : function() {
 					// Click event handler
@@ -647,68 +725,9 @@
 						}
 					});
 					
-					// Ear & transducer selectors
-					$('#button_left').click(function() {
-						selection.ear = 'left';
-					});
-					
-					$('#button_right').click(function() {
-						selection.ear = 'right';
-					});
-					
-					// Test button for whatever I need to check at the moment
-					$('#button_test').click(function() {
-						selection.addPoint = (selection.addPoint) ? false : true;
-					});
-					
-					$('#button_save').click(function() {
-						Data.save();
-					});
-					
-					$('#button_air').click(function() {
-						selection.transducer = 'air';
-						if (selection.ear != 'left' && selection.ear != 'right') {
-							alert('changing');
-							selection.ear = 'left';
-						}
-					});
-					
-					$('#button_bone').click(function() {
-						selection.transducer = 'bone';
-						if (selection.ear != 'left' && selection.ear != 'right') {
-							selection.ear = 'left';
-						}					
-					});
-					
-					$('#button_soundfield').click(function() {
-						selection.ear = 'soundfield';
-						if (selection.transducer != 'unadied' && selection.transducer != 'aided' && selection.transducer != 'ci') {
-							selection.transducer = 'unaided';
-						}
-					});
-					
-					$('#button_unaided').click(function() {
-						selection.ear = 'soundfield';
-						selection.transducer = 'unaided';
-					});
-					
-					$('#button_aided').click(function() {
-						selection.ear = 'soundfield';
-						selection.transducer = 'aided';
-					});
-					
-					$('#button_ci').click(function() {
-						selection.ear = 'soundfield';
-						selection.transducer = 'ci';
-					});
-					
-					$('#button_unmasked').click(function() {
-						selection.masking = false;
-					});
-
-					$('#button_masked').click(function() {
-						selection.masking = true;
-					});				
+					controls();
+					earSpecificButtons();
+					soundfieldButtons();
 				}
 			};
 		}(); // End Events
