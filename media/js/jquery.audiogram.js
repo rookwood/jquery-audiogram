@@ -343,26 +343,38 @@
 			/**
 			 * Draws lines connecting data points
 			 **/
-			var dataLine = function(x, y, color) {
+			var dataLine = function(x, y, ear, transducer) {
 				ctx.lineWidth = 1;
 				
 				// If first point entered, we don't need a line yet
 				if (current.x === false) {
 					current.x = x;
-					current.y = y;
+					current.y = y
+					current.transducer = transducer;
 				}
 				else {
 					// Using $.extend because javascript passes objects by reference making cloning and then modifying difficult
 					previous = $.extend({}, current);
 					current.x = x;
-					current.y = y;
+					current.y = y
+					current.transducer = transducer;
 					
 					// If this condition is false, we're starting a new data set (e.g. changing ears) and don't want a connecting line
-					if (current.x > previous.x) {
-						ctx.strokeStyle = color;
+					if (current.x > previous.x && current.transducer == previous.transducer) {
+						console.log('ear :' + ear + '\ntransducer : ' + transducer);
+						switch(ear) {
+							case 'left' :
+								ctx.strokeStyle = '#0000d0';
+								break;
+							case 'right' :
+								ctx.strokeStyle = '#d00000';
+								break;
+							default :
+								ctx.strokeStyle = '#000000';
+						}
 						
 						// Y-coordinate adjustment for extreme slope (aesthetic change)
-						yDelta = (current.y - previous.y) * 0.1;
+						var yDelta = (current.y - previous.y) * 0.1;
 						
 						// Line drawing
 						ctx.beginPath();
@@ -409,12 +421,9 @@
 						ctx.drawImage(img, x - (img.width / 2) - 4, y - (img.height / 2));
 					}
 					
-					// Draw ear appropriate color for left/right (air) or black for sound field
-					if (transducer == 'air') {
-						dataLine(x, y, (ear == 'right') ? 'd00000' : '0000d0');
-					}
-					else if (transducer == 'unaided' || transducer == 'aided' || transducer == 'ci') {
-						dataLine(x, y, '000000');
+					// We don't want lines connecting bone conduction thresholds (standard professional practice)
+					if (transducer != 'bone') {
+						dataLine(x, y, ear, transducer);
 					}
 				},
 			};
@@ -498,11 +507,7 @@
 					sizey = option.audiogramHeight / horizontalLines,
 					sizex = option.audiogramWidth / verticalLines;
 				
-				console.log(selection.ear + ' | ' + selection.transducer + ' | ' + selection.masking);
-				
 				var maskTag = (selection.masking) ? '-m' : '';
-				
-				console.log(maskTag);
 				
 				audiometricData[selection.ear][selection.transducer][frequencies[Math.round((x / sizex) - 1)]] =
 				    (selection.addPoint) ?  thresholds[Math.round((y / sizey) - 1)] + maskTag : false;
