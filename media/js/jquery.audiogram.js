@@ -361,7 +361,6 @@
 					
 					// If this condition is false, we're starting a new data set (e.g. changing ears) and don't want a connecting line
 					if (current.x > previous.x && current.transducer == previous.transducer) {
-						console.log('ear :' + ear + '\ntransducer : ' + transducer);
 						switch(ear) {
 							case 'left' :
 								ctx.strokeStyle = '#0000d0';
@@ -456,14 +455,14 @@
 					    sfa       = $(cells.get(6)).text(),
 					    sfci      = $(cells.get(7)).text();
 					
-					// If no data, the cell text will be "false" - otherwise, put the number in our data object
-					audiometricData.right.air[frequency]          = (rightAir  == 'false') ? false : rightAir;
-					audiometricData.right.bone[frequency]         = (rightBone == 'false') ? false : rightBone;
-					audiometricData.left.air[frequency]           = (leftAir   == 'false') ? false : leftAir;
-					audiometricData.left.bone[frequency]          = (leftBone  == 'false') ? false : leftBone;
-					audiometricData.soundfield.unaided[frequency] = (sfua      == 'false') ? false : sfua;
-					audiometricData.soundfield.aided[frequency]   = (sfa       == 'false') ? false : sfa;
-					audiometricData.soundfield.ci[frequency]      = (sfci      == 'false') ? false : sfci;
+					// If no data, the cell text will be empty - otherwise, put the number in our data object
+					audiometricData.right.air[frequency]          = (rightAir)  ? rightAir  : false;
+					audiometricData.right.bone[frequency]         = (rightBone) ? rightBone : false;
+					audiometricData.left.air[frequency]           = (leftAir)   ? leftAir   : false;
+					audiometricData.left.bone[frequency]          = (leftBone)  ? leftBone  : false;
+					audiometricData.soundfield.unaided[frequency] = (sfua)      ? sfua      : false;
+					audiometricData.soundfield.aided[frequency]   = (sfa )      ? sfa       : false;
+					audiometricData.soundfield.ci[frequency]      = (sfci)      ? sfci      : false;
 				});
 			};
 			

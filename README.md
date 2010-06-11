@@ -31,45 +31,45 @@ Here is an abbreviated sample:
 		</thead>
 		<tbody>
 			<tr>
-				<td>t125</td>
-				<td>false</td>
-				<td>false</td>
-				<td>false</td>
-				<td>false</td>
-				<td>false</td>
-				<td>false</td>
-				<td>false</td>
+				<td>t250</td>
+				<td>10</td>
+				<td>5</td>
+				<td>10</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
 			</tr>
 			<tr>
-				<td>t180</td>
-				<td>false</td>
-				<td>false</td>
-				<td>false</td>
-				<td>false</td>
-				<td>false</td>
-				<td>false</td>
-				<td>false</td>
+				<td>t500</td>
+				<td>15</td>
+				<td>15</td>
+				<td>20</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
 			</tr>
 			// Snip to save space
 			<tr>
 				<td>t8k</td>
 				<td>50</td>
-				<td>false</td>
+				<td></td>
 				<td>100</td>
-				<td>false</td>
-				<td>false</td>
-				<td>false</td>
-				<td>false</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
 			</tr>
 			<tr>
 				<td>t12k</td>
-				<td>false</td>
-				<td>false</td>
-				<td>false</td>
-				<td>false</td>
-				<td>false</td>
-				<td>false</td>
-				<td>false</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
 			</tr>
 		</tbody>
 	</table>
@@ -77,7 +77,7 @@ Here is an abbreviated sample:
 You need to include a couple of non-standard audiometric frequencies; it's just a small quirk of this program at present :
 125, 180, 250, 375, 500, 750, 1k, 1.5k, 2k, 3k, 4k, 6k, 8k, 12k
 
-Any point not plotted should have a value of false.  Otherwise, just the threshold is fine.  Use -m for masking (e.g. 45 or 45-m)
+Any point not plotted should have an empty value (i.e. <td></td>).  Otherwise, just insert the threshold.  Use -m for masking (e.g. 45 or 45-m)
 
 Invoking the plugin
 =============
