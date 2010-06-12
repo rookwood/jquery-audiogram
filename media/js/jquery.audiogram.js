@@ -550,16 +550,16 @@
 										// Is this a masked threshold?
 										var masking = (threshold.match(/\-m$/)) ? true : false;
 										
-										threshold = threshold.split('-')[0];
+										threshold = threshold.split('-m')[0];
 									}
 									else {
 										var masking = false;
 									}
 									
 									// If the threshold is not valid (i.e. not an int) throw an error
-									if (!parseInt(threshold)) {
-										console.log(ear + ' : ' + transducer + ' : ' + frequency + ' : ' + threshold);
-										throw('threshold.invalid');
+									if (parseInt(threshold) == NaN) {
+										console.log (threshold);
+											throw('threshold.invald');
 									}
 									// Or if the threshold is not a multiple of 5
 									else if (!threshold % 5)  {
@@ -577,13 +577,14 @@
 				}
 				catch(err) {
 					if (err == 'threshold.invalid') {
-						alert('Invalid threshold data, please reload or contact your admin');
+						audiometricData[ear][transducer][frequency] = false;
+						alert('caught threshold.invald: set to false');
 					}
 					else if (err == 'threshold.notMultiple') {
 						alert('Threshold not a proper multiple of 5');
 					}
 					else {
-						alert('Unspecified error');
+						alert('Royce should not be seeing this: ' + err);
 					}
 				}
 				
@@ -746,7 +747,11 @@
 							y = e.clientY - canvas.offsetTop  + window.pageYOffset; 
 						
 						// If on the audiogram
-						if (x <= option.audiogramWidth + option.xOffset && y <= option.audiogramHeight - option.yOffset) {
+						if (x <= option.audiogramWidth + option.xOffset
+						 && y <= option.audiogramHeight - option.yOffset
+						 && x >= option.xOffset
+						 && y >= option.yOffset) {
+						
 							// Clear the board
 							Canvas.draw();
 							
