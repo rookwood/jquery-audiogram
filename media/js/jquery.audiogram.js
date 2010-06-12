@@ -536,31 +536,57 @@
 			 **/
 			var plotAudiogram = function() {
 				// Iterating through each level of our audiometricData object
-				$.each(audiometricData, function(ear) {
-					$.each(audiometricData[ear], function(transducer) {
-						$.each(audiometricData[ear][transducer], function(frequency, threshold) {						
-							
-							// Don't plot any non-existant data points
-							if (threshold !== false) {
+				try {
+					$.each(audiometricData, function(ear) {
+						$.each(audiometricData[ear], function(transducer) {
+							$.each(audiometricData[ear][transducer], function(frequency, threshold) {						
 								
-								// If not sound field testing, test for masked thresholds
-								if (ear != 'soundfield') {
+								// Don't plot any non-existant data points
+								if (threshold !== false) {
 									
-									// Is this a masked threshold?
-									var masking = (threshold.match(/\-m$/)) ? true : false;
+									// If not sound field testing, test for masked thresholds
+									if (ear != 'soundfield') {
+										
+										// Is this a masked threshold?
+										var masking = (threshold.match(/\-m$/)) ? true : false;
+										
+										threshold = threshold.split('-')[0];
+									}
+									else {
+										var masking = false;
+									}
 									
-									threshold = threshold.split('-')[0];
+									// If the threshold is not valid (i.e. not an int) throw an error
+									if (!parseInt(threshold)) {
+										console.log(ear + ' : ' + transducer + ' : ' + frequency + ' : ' + threshold);
+										throw('threshold.invalid');
+									}
+									// Or if the threshold is not a multiple of 5
+									else if (!threshold % 5)  {
+										console.log(ear + ' : ' + transducer + ' : ' + frequency + ' : ' + threshold);
+										throw('threshold.notMultiple');
+									}
+									else {
+										var coords = thresholdToXY(frequency, threshold);
+										Canvas.plot(coords.x, coords.y, ear, transducer, masking);
+									}
 								}
-								else {
-									var masking = false;
-								}
-								
-								var coords = thresholdToXY(frequency, threshold);
-								Canvas.plot(coords.x, coords.y, ear, transducer, masking);
-							}
+							});
 						});
 					});
-				});
+				}
+				catch(err) {
+					if (err == 'threshold.invalid') {
+						alert('Invalid threshold data, please reload or contact your admin');
+					}
+					else if (err == 'threshold.notMultiple') {
+						alert('Threshold not a proper multiple of 5');
+					}
+					else {
+						alert('Unspecified error');
+					}
+				}
+				
 			};
 			
 			/** Public properties and methods **/
