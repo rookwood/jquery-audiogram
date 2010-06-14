@@ -174,8 +174,6 @@
 		// The table to be replaced with the canvas
 		var dataSource = $(this).attr('id');
 		
-		var canvas = $('#audiogram-'+dataSource).get(0);
-		
 		// Images to be used for audiometric data points
 		var icon = {
 			left : {
@@ -628,7 +626,10 @@
 					$.ajax({
 						// set request parameters
 						type : "POST",
-						data : audiometricData,
+						data : {
+							'audiometricData' : audiometricData,
+							'patient_id' : dataSource,
+						},
 						url : '/matt/test.php',
 						
 						// if successful, show message indicating such
@@ -642,11 +643,13 @@
 						},
 						
 						// if error, show what went wrong
-						error : function(msg) {
-							console.log(msg);
+						error : function(xhr, textStatus, errorThrown) {
+							console.log(xhr);
+							console.log(textStatus);
+							console.log(errorThrown);
 							
 							$('#container').before('<div id="message"></div>');
-							$('#message').addClass('error').html('Error: Something bad happened.  You should probably fix that. '+msg.status+'|'+msg.statusText).fadeIn(1500).delay(3500).fadeOut(1000, function() {
+							$('#message').addClass('error').html('Error: '+xhr.responseText).fadeIn(1500).delay(3500).fadeOut(1000, function() {
 								$(this).remove();
 							});
 						},
