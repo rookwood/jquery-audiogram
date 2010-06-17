@@ -4,7 +4,7 @@
  * by Matt Hollis - contact via my name at gmail.com
  *
  * Copyright (c) 2010 Matt Hollis
- * Version: 0.1.1-2010.06.10
+ * Version: 0.1.1-2010.06.16
  *
  * --------------------------------------------------------------------
  **/
@@ -171,8 +171,10 @@
 			}
 		};
 		
-		// The table to be replaced with the canvas
-		var dataSource = $(this).attr('id');
+		// Patient information
+		var patient     = $(this).attr('id'),
+		    appointment = $(this).attr('appointment'),
+			audiogram   = $(this).attr('audiogram');
 		
 		// Images to be used for audiometric data points
 		var icon = {
@@ -227,10 +229,10 @@
 			var init = function() {
 				// Inject our canvas into the DOM and hide our data table. Note that the table is not
 				// being removed from the DOM, merely hidden so that we can still parse its data.
-				$('#'+dataSource).after('<canvas id="audiogram-'+dataSource+'" class="audiogram"></canvas>').hide();
+				$('#'+patient).after('<canvas id="audiogram-'+patient+'" class="audiogram"></canvas>').hide();
 				
 				// Obtain a reference to the canvas and set some of its properties
-				canvas = $('#audiogram-'+dataSource).get(0);
+				canvas = $('#audiogram-'+patient).get(0);
 				canvas.width  = option.cvWidth;
 				canvas.height = option.cvHeight;
 				
@@ -438,7 +440,7 @@
 			 **/
 			var parseTable = function() {
 				// Iterate through each table row
-				$('#'+dataSource+' > tbody > tr').each(function() {
+				$('#'+patient+' > tbody > tr').each(function() {
 					
 					// Store a reference to the row to save on DOM traversal
 					var cells = $(this).children();
@@ -627,8 +629,10 @@
 						// set request parameters
 						type : "POST",
 						data : {
-							'audiometricData' : audiometricData,
-							'patient_id' : dataSource,
+							'patient_id'      : patient,
+							'appointment_id'  : appointment,
+							'audiogram_id'    : audiogram,
+							'audiometricData' : audiometricData
 						},
 						url : '/matt/test.php',
 						
