@@ -708,31 +708,40 @@
 		
 			var controls = function() {
 				$('#button_ear_specific').click(function() {
+					console.log(selection.ear);
+					console.log(selection.transducer);
 					$('section#buttons_soundfield').fadeOut(500, function() {
 						$('section#buttons_ear_specific').fadeIn(500);
 					});
 					
 					if (selection.ear != 'left' && selection.ear != 'right') {
-						selection.ear = 'left';
+						// Have to click the label since jQueryUI hides the actual button element
+						$('[for=button_left], #button_left').click();
+						
 					}
 					
 					if (selection.transducer != 'air' && selection.transducer != 'bone') {
-						selection.transducer = 'air';
+						$('[for=button_air], #button_air').click();
 					}
+					$('[for=button_unmasked], #button_unmasked').click();
 				});
 				
 				$('#button_soundfield').click(function() {
 					$('section#buttons_ear_specific').fadeOut(500, function() {
-						$('section#buttons_soundfield').fadeIn(500);
+						$('section#buttons_soundfield').fadeIn(500, function() {
+							$('[for=button_unaided], #button_unaided').click()
+						});
 					});
 					
 					selection.ear = 'soundfield';
-					selection.transducer = 'unaided';
 				});
 					
-				// Test button for whatever I need to check at the moment
-				$('#button_test').click(function() {
-					selection.addPoint = (selection.addPoint) ? false : true;
+				$('#button_add').click(function() {
+					selection.addPoint = true;
+				});
+				
+				$('#button_remove').click(function() {
+					selection.addPoint = false;
 				});
 				
 				$('#button_save').click(function() {
@@ -742,10 +751,12 @@
 			
 			var earSpecificButtons = function() {
 				$('#button_left').click(function() {
+					console.log('left clicked');
 					selection.ear = 'left';
 				});
 				
 				$('#button_right').click(function() {
+					console.log('right clicked');
 					selection.ear = 'right';
 				});
 				
@@ -809,6 +820,8 @@
 					controls();
 					earSpecificButtons();
 					soundfieldButtons();
+					
+					$('#button_ear_specific, #button_left, #button_air, #button_add').click();
 				}
 			};
 		}(); // End Events
