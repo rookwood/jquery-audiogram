@@ -4,7 +4,7 @@
  * by Matt Hollis - contact via my name at gmail.com
  *
  * Copyright (c) 2010 Matt Hollis
- * Version: 0.1.1-2010.06.16
+ * Version: 0.1.1-2010.06.10
  *
  * --------------------------------------------------------------------
  **/
@@ -27,7 +27,8 @@
 			ear : 'right',
 			transducer : 'air',
 			masking : false,
-			addPoint : 'true'
+			addPoint : true,
+			response : true,
 			
 		}
 		// Replace defautls with any user passed settings
@@ -180,28 +181,61 @@
 		var icon = {
 			left : {
 				air : {
-					unmasked : new Image(),
-					masked   : new Image()
+					unmasked : {
+						response   : new Image(),
+						noResponse : new Image()
+					},
+					masked : {
+						response   : new Image(),
+						noResponse : new Image()
+					}
 				},
 				bone : {
-					unmasked : new Image(),
-					masked   : new Image()
+					unmasked : {
+						response   : new Image(),
+						noResponse : new Image()
+					},
+					masked : {
+						response   : new Image(),
+						noResponse : new Image()
+					}
 				}
 			},
 			right : {
 				air : {
-					unmasked : new Image(),
-					masked   : new Image()
+					unmasked : {
+						response   : new Image(),
+						noResponse : new Image()
+					},
+					masked : {
+						response   : new Image(),
+						noResponse : new Image()
+					}
 				},
 				bone : {
-					unmasked : new Image(),
-					masked   : new Image()
+					unmasked : {
+						response   : new Image(),
+						noResponse : new Image()
+					},
+					masked : {
+						response   : new Image(),
+						noResponse : new Image()
+					}
 				}
 			},
 			soundfield : {
-				unaided : new Image(),
-				aided   : new Image(),
-				ci      : new Image()
+				unaided : {
+					response   : new Image(),
+					noResponse : new Image()
+				},
+				aided : {
+					response   : new Image(),
+					noResponse : new Image()
+				},
+				ci : {
+					response   : new Image(),
+					noResponse : new Image()
+				}
 			}
 		};
 		
@@ -406,12 +440,12 @@
 				 * @param  object   image to be drawn
 				 * @return void
 				 **/
-				plot : function(x, y, ear, transducer, masking) {	
+				plot : function(x, y, ear, transducer, masking, response) {	
 					if (ear != 'soundfield') {
-						var img = icon[ear][transducer][(masking) ? 'masked' : 'unmasked'];
+						var img = icon[ear][transducer][(masking) ? 'masked' : 'unmasked'][(response) ? 'response' : 'noResponse'];
 					}
 					else {
-						var img = icon[ear][transducer];
+						var img = icon[ear][transducer][(response) ? 'response' : 'noResponse'];
 					}
 					
 					// Don't draw anything that would be off the grid
@@ -479,11 +513,11 @@
 				    sizey = option.audiogramHeight / horizontalLines,
 				    sizex = option.audiogramWidth / verticalLines,
 				    
-				    //first we need to find the rectangle where the click happened
+				    // First we need to find the rectangle where the click happened
 				    iX = parseInt(x / sizex),
 				    iY = parseInt(y / sizey),
 				    
-				    //then we need to find the closest corner
+				    // Then we need to find the closest corner
 				    quadrantX = parseInt((x % sizex) / (sizex / 2)),
 				    quadrantY = parseInt((y % sizey) / (sizey / 2)),
 				    
@@ -506,10 +540,11 @@
 					sizey = option.audiogramHeight / horizontalLines,
 					sizex = option.audiogramWidth / verticalLines;
 				
-				var maskTag = (selection.masking) ? '-m' : '';
+				var maskTag = (selection.masking)  ? '-m' : '',
+				    respTag = (selection.response) ? '' : '-nr';
 				
 				audiometricData[selection.ear][selection.transducer][frequencies[Math.round((x / sizex) - 1)]] =
-				    (selection.addPoint) ?  thresholds[Math.round((y / sizey) - 1)] + maskTag : false;
+				    (selection.addPoint) ?  thresholds[Math.round((y / sizey) - 1)] + respTag + maskTag : false;
 			};
 			
 			/**
@@ -544,13 +579,17 @@
 								// Don't plot any non-existant data points
 								if (threshold !== false) {
 									
-									// If not sound field testing, test for masked thresholds
+									// Test for no response
+									var response = (!threshold.match(/-nr/)) ? true : false;
+									
+									// If not sound field, test for masked thresholds
 									if (ear != 'soundfield') {
 										
 										// Is this a masked threshold?
-										var masking = (threshold.match(/\-m$/)) ? true : false;
+										var masking = (threshold.match(/\-m/)) ? true : false;
 										
-										threshold = threshold.split('-m')[0];
+										// Store the int value (removes no response and masking flags)
+										threshold = threshold.split('-')[0];
 									}
 									else {
 										var masking = false;
@@ -568,7 +607,7 @@
 									}
 									else {
 										var coords = thresholdToXY(frequency, threshold);
-										Canvas.plot(coords.x, coords.y, ear, transducer, masking);
+										Canvas.plot(coords.x, coords.y, ear, transducer, masking, response);
 									}
 								}
 							});
@@ -792,36 +831,63 @@
 			}
 			
 			// Function called each time one of the icon images is loaded; Data.plot() called once the count arguemnt is reached
+			// TODO: change to 23 once no reponse icons are made
 			var imgLoaded = collected(12, function() {
 				Data.plot();
 			});
 			
 			// Must bind .load event before declaring source for it to fire reliably
 			// Using jQuery here to compensate for the vanilla load event not firing for cached images
-			$(icon.left.air.unmasked).load(function() {imgLoaded();});
-			$(icon.left.air.masked).load(function() {imgLoaded();});
-			$(icon.right.air.unmasked).load(function() {imgLoaded();});
-			$(icon.right.air.masked).load(function() {imgLoaded();});
-			$(icon.left.bone.unmasked).load(function() {imgLoaded();});
-			$(icon.left.bone.masked).load(function() {imgLoaded();});
-			$(icon.right.bone.unmasked).load(function() {imgLoaded();});
-			$(icon.right.bone.masked).load(function() {imgLoaded();});
-			$(icon.soundfield.unaided).load(function() {imgLoaded();});
-			$(icon.soundfield.aided).load(function() {imgLoaded();});
-			$(icon.soundfield.ci).load(function() {imgLoaded();});
-
+			$(icon.left.air.unmasked.response).load(function() {imgLoaded();});
+			$(icon.left.air.masked.response).load(function() {imgLoaded();});
+			$(icon.right.air.unmasked.response).load(function() {imgLoaded();});
+			$(icon.right.air.masked.response).load(function() {imgLoaded();});
+			$(icon.left.bone.unmasked.response).load(function() {imgLoaded();});
+			$(icon.left.bone.masked.response).load(function() {imgLoaded();});
+			$(icon.right.bone.unmasked.response).load(function() {imgLoaded();});
+			$(icon.right.bone.masked.response).load(function() {imgLoaded();});
+			$(icon.soundfield.unaided.response).load(function() {imgLoaded();});
+			$(icon.soundfield.aided.response).load(function() {imgLoaded();});
+			$(icon.soundfield.ci.response).load(function() {imgLoaded();});
+			/* commented out until icons are made
+			$(icon.left.air.unmasked.noResponse).load(function() {imgLoaded();});
+			$(icon.left.air.masked.noResponse).load(function() {imgLoaded();});
+			$(icon.right.air.unmasked.noResponse).load(function() {imgLoaded();});
+			$(icon.right.air.masked.noResponse).load(function() {imgLoaded();});
+			$(icon.left.bone.unmasked.noResponse).load(function() {imgLoaded();});
+			$(icon.left.bone.masked.noResponse).load(function() {imgLoaded();});
+			$(icon.right.bone.unmasked.noResponse).load(function() {imgLoaded();});
+			$(icon.right.bone.masked.noResponse).load(function() {imgLoaded();});
+			$(icon.soundfield.unaided.noResponse).load(function() {imgLoaded();});
+			$(icon.soundfield.aided.noResponse).load(function() {imgLoaded();});
+			$(icon.soundfield.ci.noResponse).load(function() {imgLoaded();});
+			*/
+			
 			// Now assign image sources
-			icon.left.air.unmasked.src   = option.imgPath + 'left.air.unmasked.png';
-			icon.left.air.masked.src     = option.imgPath + 'left.air.masked.png';
-			icon.right.air.unmasked.src  = option.imgPath + 'right.air.unmasked.png';
-			icon.right.air.masked.src    = option.imgPath + 'right.air.masked.png';
-			icon.left.bone.unmasked.src  = option.imgPath + 'left.bone.unmasked.png';
-			icon.left.bone.masked.src    = option.imgPath + 'left.bone.masked.png';
-			icon.right.bone.unmasked.src = option.imgPath + 'right.bone.unmasked.png';
-			icon.right.bone.masked.src   = option.imgPath + 'right.bone.masked.png';
-			icon.soundfield.unaided.src  = option.imgPath + 'soundfield.unaided.png';
-			icon.soundfield.aided.src    = option.imgPath + 'soundfield.aided.png';
-			icon.soundfield.ci.src       = option.imgPath + 'soundfield.ci.png';
+			icon.left.air.unmasked.response.src     = option.imgPath + 'left.air.unmasked.response.png';
+			icon.left.air.masked.response.src       = option.imgPath + 'left.air.masked.response.png';
+			icon.right.air.unmasked.response.src    = option.imgPath + 'right.air.unmasked.response.png';
+			icon.right.air.masked.response.src      = option.imgPath + 'right.air.masked.response.png';
+			icon.left.bone.unmasked.response.src    = option.imgPath + 'left.bone.unmasked.response.png';
+			icon.left.bone.masked.response.src      = option.imgPath + 'left.bone.masked.response.png';
+			icon.right.bone.unmasked.response.src   = option.imgPath + 'right.bone.unmasked.response.png';
+			icon.right.bone.masked.response.src     = option.imgPath + 'right.bone.masked.response.png';
+			icon.soundfield.unaided.response.src    = option.imgPath + 'soundfield.unaided.response.png';
+			icon.soundfield.aided.response.src      = option.imgPath + 'soundfield.aided.response.png';
+			icon.soundfield.ci.response.src         = option.imgPath + 'soundfield.ci.response.png';
+			/* commented out until icons are made
+			icon.left.air.unmasked.noResponse.src   = option.imgPath + 'left.air.unmasked.noResponse.png';
+			icon.left.air.masked.noResponse.src     = option.imgPath + 'left.air.masked.noResponse.png';
+			icon.right.air.unmasked.noResponse.src  = option.imgPath + 'right.air.unmasked.noResponse.png';
+			icon.right.air.masked.noResponse.src    = option.imgPath + 'right.air.masked.noResponse.png';
+			icon.left.bone.unmasked.noResponse.src  = option.imgPath + 'left.bone.unmasked.noResponse.png';
+			icon.left.bone.masked.noResponse.src    = option.imgPath + 'left.bone.masked.noResponse.png';
+			icon.right.bone.unmasked.noResponse.src = option.imgPath + 'right.bone.unmasked.noResponse.png';
+			icon.right.bone.masked.noResponse.src   = option.imgPath + 'right.bone.masked.noResponse.png';
+			icon.soundfield.unaided.noResponse.src  = option.imgPath + 'soundfield.unaided.noResponse.png';
+			icon.soundfield.aided.noResponse.src    = option.imgPath + 'soundfield.aided.noResponse.png';
+			icon.soundfield.ci.noResponse.src       = option.imgPath + 'soundfield.ci.noResponse.png';
+			*/
 
 			// Trigger condition - will run Data.plot() after all images have loaded
 			imgLoaded();
