@@ -21,8 +21,9 @@
 			backgroundColor : '#eeeeee',
 			editable : false,
 			imgPath : '/matt/media/img/audiogram/',
+			debug : false
 		};
-		
+			
 		var selection = {
 			ear : 'right',
 			transducer : 'air',
@@ -275,7 +276,7 @@
 				
 				// Test that initialization went as expected
 				if (!ctx) {
-					console.log('Error initializing canvas.');
+					debug.error('Error initializing canvas.');
 					return false;
 				}
 				firstRun = false;
@@ -597,12 +598,12 @@
 									
 									// If the threshold is not valid (i.e. not an int) throw an error
 									if (parseInt(threshold) == NaN) {
-										console.log (threshold);
+										debug.warn (threshold);
 											throw('threshold.invald');
 									}
 									// Or if the threshold is not a multiple of 5
 									else if (!threshold % 5)  {
-										console.log(ear + ' : ' + transducer + ' : ' + frequency + ' : ' + threshold);
+										debug.warn(ear + ' : ' + transducer + ' : ' + frequency + ' : ' + threshold);
 										throw('threshold.notMultiple');
 									}
 									else {
@@ -677,7 +678,7 @@
 						
 						// if successful, show message indicating such
 						success : function(msg) {
-							console.log(msg);
+							debug.info(msg);
 							
 							$('#container').before('<div id="message"></div>');
 							$('#message').addClass('success').html('<p>Data saved.</p>').fadeIn(1500).delay(3500).fadeOut(1000, function() {
@@ -687,9 +688,9 @@
 						
 						// if error, show what went wrong
 						error : function(xhr, textStatus, errorThrown) {
-							console.log(xhr);
-							console.log(textStatus);
-							console.log(errorThrown);
+							debug.info(xhr);
+							debug.warn(textStatus);
+							debug.error(errorThrown);
 							
 							$('#container').before('<div id="message"></div>');
 							$('#message').addClass('error').html('Error: '+xhr.responseText).fadeIn(1500).delay(3500).fadeOut(1000, function() {
@@ -708,14 +709,12 @@
 		
 			var controls = function() {
 				$('#button_ear_specific').click(function() {
-					console.log(selection.ear);
-					console.log(selection.transducer);
 					$('section#buttons_soundfield').fadeOut(500, function() {
 						$('section#buttons_ear_specific').fadeIn(500);
 					});
 					
 					if (selection.ear != 'left' && selection.ear != 'right') {
-						// Have to click the label since jQueryUI hides the actual button element
+						// Have to click the label and the radio button since jQueryUI seems to treat them seperately
 						$('[for=button_left], #button_left').click();
 						
 					}
@@ -744,19 +743,17 @@
 					selection.addPoint = false;
 				});
 				
-				$('#button_save').click(function() {
+				$('#button_save').click(function(e) {
 					Data.save();
 				});
 			}
 			
 			var earSpecificButtons = function() {
 				$('#button_left').click(function() {
-					console.log('left clicked');
 					selection.ear = 'left';
 				});
 				
 				$('#button_right').click(function() {
-					console.log('right clicked');
 					selection.ear = 'right';
 				});
 				
