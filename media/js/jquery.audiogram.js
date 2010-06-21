@@ -174,8 +174,8 @@
 		
 		// Patient information
 		var patient     = $(this).attr('id'),
-		    appointment = $(this).attr('appointment'),
-			audiogram   = $(this).attr('audiogram');
+		    appointment = $(this).attr('data-appointment'),
+			audiogram   = $(this).attr('data-audiogram');
 		
 		// Images to be used for audiometric data points
 		var icon = {
@@ -796,8 +796,8 @@
 					$(canvas).bind('click', function(e) {
 						
 						// (x, y) of mouse cursor at click; compensated to get coordinates relative to canvas's (0, 0)
-						var x = e.clientX - canvas.offsetLeft + window.pageXOffset,
-							y = e.clientY - canvas.offsetTop  + window.pageYOffset; 
+						var x = e.clientX - canvas.offsetLeft - canvas.offsetParent.offsetLeft + window.pageXOffset,
+							y = e.clientY - canvas.offsetTop  - canvas.offsetParent.offsetTop + window.pageYOffset; 
 						
 						// If on the audiogram
 						if (x <= option.audiogramWidth + option.xOffset
