@@ -21,7 +21,6 @@
 			backgroundColor : '#eeeeee',
 			editable : false,
 			imgPath : '/matt/media/img/audiogram/',
-			debug : false
 		};
 			
 		var selection = {
