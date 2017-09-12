@@ -372,16 +372,17 @@
 		 	var drawLabels = function() {
 				ctx.font = "12px 'arial'";
 				ctx.fillStyle = '#000000';
+				var discount = 3;
 
 				// x-axis labels
 				for (i = 0; i < xLabels.length; i++) {
-					var xStart = (i * (option.audiogramWidth / (xLabels.length - 1))) + option.xOffset;
+					var xStart = (i * (option.audiogramWidth / (xLabels.length - 1))) + option.xOffset - discount;
 					ctx.fillText(xLabels[i], xStart, option.yOffset / 1.5);
 				}
 
 				// y-axis labels
 				for (j = 0; j < yLabels.length; j++) {
-					var yStart = (j * (option.audiogramHeight / (yLabels.length))) + option.yOffset;
+					var yStart = (j * (option.audiogramHeight / (yLabels.length))) + option.yOffset + discount;
 					ctx.fillText(yLabels[j], option.xOffset / 3, yStart);
 				}
 			};
