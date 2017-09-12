@@ -43,7 +43,7 @@
 		// Canvas variables
 		var
 			xLabels = ['0,125', '0,25', '0,5', '1', '2', '4', '8'],
-	    yLabels = ['-10', '0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100', '110', '120']
+	    	yLabels = ['-10', '0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100', '110', '120']
 	 	;
 
 		// Audiometric variables
@@ -179,7 +179,7 @@
 		// Patient information
 		var
 			patient     = $(this).attr('id'),
-	    appointment = $(this).attr('data-appointment'),
+	    	appointment = $(this).attr('data-appointment'),
 			audiogram   = $(this).attr('data-audiogram')
 		;
 
@@ -463,7 +463,7 @@
 					// Don't draw anything that would be off the grid
 					if (y < (option.audiogramHeight - option.yOffset) && x > option.xOffset - 5) {
 						// extra x - 5 because I suck at making images centered in photoshop
-						ctx.drawImage(img, x - (img.width / 2) - 4, y - (img.height / 2));
+						ctx.drawImage(img, x - (img.width / 2) - 3, y - (img.height / 2));
 					}
 
 					// We don't want lines connecting bone conduction thresholds (standard professional practice)
