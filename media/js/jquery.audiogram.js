@@ -677,46 +677,45 @@
 					// Draw all the data points
 					plotAudiogram();
 				},
-
 				/**
 				 * Saves data to the database via AJAX call
 				 **/
-			 	save : function() {
-					// jQuery ajax handler
-					$.ajax({
-						// set request parameters
-						type : "POST",
-						data : {
-							'patient_id'      : patient,
-							'appointment_id'  : appointment,
-							'audiogram_id'    : audiogram,
-							'audiometricData' : audiometricData
-						},
-						url : '/matt/test.php',
+			 	// save : function() {
+				// 	// jQuery ajax handler
+				// 	$.ajax({
+				// 		// set request parameters
+				// 		type : "POST",
+				// 		data : {
+				// 			'patient_id'      : patient,
+				// 			'appointment_id'  : appointment,
+				// 			'audiogram_id'    : audiogram,
+				// 			'audiometricData' : audiometricData
+				// 		},
+				// 		url : '/matt/test.php',
 
-						// if successful, show message indicating such
-						success : function(msg) {
-							debug.info(msg);
+				// 		// if successful, show message indicating such
+				// 		success : function(msg) {
+				// 			debug.info(msg);
 
-							$('#container').before('<div id="message"></div>');
-							$('#message').addClass('success').html('<p>Data saved.</p>').fadeIn(1500).delay(3500).fadeOut(1000, function() {
-								$(this).remove();
-							});
-						},
+				// 			$('#container').before('<div id="message"></div>');
+				// 			$('#message').addClass('success').html('<p>Data saved.</p>').fadeIn(1500).delay(3500).fadeOut(1000, function() {
+				// 				$(this).remove();
+				// 			});
+				// 		},
 
-						// if error, show what went wrong
-						error : function(xhr, textStatus, errorThrown) {
-							debug.info(xhr);
-							debug.warn(textStatus);
-							debug.error(errorThrown);
+				// 		// if error, show what went wrong
+				// 		error : function(xhr, textStatus, errorThrown) {
+				// 			debug.info(xhr);
+				// 			debug.warn(textStatus);
+				// 			debug.error(errorThrown);
 
-							$('#container').before('<div id="message"></div>');
-							$('#message').addClass('error').html('Error: '+xhr.responseText).fadeIn(1500).delay(3500).fadeOut(1000, function() {
-								$(this).remove();
-							});
-						},
-					});
-				},
+				// 			$('#container').before('<div id="message"></div>');
+				// 			$('#message').addClass('error').html('Error: '+xhr.responseText).fadeIn(1500).delay(3500).fadeOut(1000, function() {
+				// 				$(this).remove();
+				// 			});
+				// 		},
+				// 	});
+				// },
 			};
 		}(); // End Data
 
@@ -749,7 +748,6 @@
 							$('[for=button_unaided], #button_unaided').click()
 						});
 					});
-
 					selection.ear = 'soundfield';
 				});
 
@@ -761,9 +759,9 @@
 					selection.addPoint = false;
 				});
 
-				$('#button_save').click(function(e) {
-					Data.save();
-				});
+				// $('#button_save').click(function(e) {
+				// 	Data.save();
+				// });
 			};
 
 			var earSpecificButtons = function() {
