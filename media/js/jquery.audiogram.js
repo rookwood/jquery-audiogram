@@ -370,7 +370,7 @@
 			 * Puts labels on the x- and y-axes
 			 **/
 		 	var drawLabels = function() {
-				ctx.font = "12px 'arial'";
+				ctx.font = "bold 12px 'arial'";
 				ctx.fillStyle = '#000000';
 				var discount = 3;
 
