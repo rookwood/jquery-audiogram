@@ -43,13 +43,13 @@
 		// Canvas variables
 		var
 			xLabels = ['0,125', '0,25', '0,5', '1', '2', '4', '8'],
-	    	yLabels = ['-10', '0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100', '110', '120']
+    	yLabels = ['-10', '0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100', '110', '120']
 	 	;
 
 		// Audiometric variables
 		var
 			frequencies = ['t125', 't180', 't250', 't375', 't500', 't750', 't1k', 't1500', 't2k', 't3k', 't4k', 't6k', 't8k'],
-		  thresholds  = ['-10', '-5', '0', '5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '60', '65', '70', '75', '80', '85', '90', '95', '100', '105', '110', '115', '120']
+	  	thresholds  = ['-10', '-5', '0', '5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '60', '65', '70', '75', '80', '85', '90', '95', '100', '105', '110', '115', '120']
 		;
 
 		// Audiometric data object w/ empty values
@@ -179,7 +179,7 @@
 		// Patient information
 		var
 			patient     = $(this).attr('id'),
-	    	appointment = $(this).attr('data-appointment'),
+    	appointment = $(this).attr('data-appointment'),
 			audiogram   = $(this).attr('data-audiogram')
 		;
 
