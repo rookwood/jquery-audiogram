@@ -295,7 +295,7 @@
 			var shadeBackground = function() {
 				// Fill the full canvas with a solid background
 				ctx.fillStyle = '#ffffff';
-				ctx.strokeStyle = '#000000';
+				ctx.strokeStyle = '#ffffff';
 
 				ctx.fillRect(0, 0, option.cvWidth, option.cvHeight);
 				ctx.strokeRect(0, 0, option.cvWidth, option.cvHeight);
