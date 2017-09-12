@@ -16,9 +16,9 @@
 			cvHeight : 600,
 			cvWidth : 600,
 			xOffset : 40,
-			yOffset : 20,
+			yOffset : 40,
 			newGraph : false,
-			backgroundColor : '#eeeeee',
+			backgroundColor : '#ffffff',
 			editable : false,
 			imgPath : 'media/img/audiogram/',
 		};
@@ -42,7 +42,7 @@
 
 		// Canvas variables
 		var
-			xLabels = ['125', '250', '500', '1k', '2k', '4k', '8k'],
+			xLabels = ['0,125', '0,25', '0,5', '1', '2', '4', '8'],
 	    yLabels = ['-10', '0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100', '110', '120']
 	 	;
 
@@ -558,11 +558,13 @@
 					sizex = option.audiogramWidth / verticalLines
 				;
 
-				var maskTag = (selection.masking)  ? '-m' : '',
-				    respTag = (selection.response) ? '' : '-nr';
+				var
+					maskTag = (selection.masking)  ? '-m' : '',
+			    respTag = (selection.response) ? '' : '-nr'
+			  ;
 
 				audiometricData[selection.ear][selection.transducer][frequencies[Math.round((x / sizex) - 1)]] =
-				    (selection.addPoint) ?  thresholds[Math.round((y / sizey) - 1)] + respTag + maskTag : false;
+			    (selection.addPoint) ?  thresholds[Math.round((y / sizey) - 1)] + respTag + maskTag : false;
 			};
 
 			/**
