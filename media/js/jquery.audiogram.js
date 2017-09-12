@@ -29,8 +29,8 @@
 			masking : false,
 			addPoint : true,
 			response : true,
+		};
 
-		}
 		// Replace defautls with any user passed settings
 		var option = $.extend(defaults, settings);
 
@@ -41,12 +41,16 @@
 		option.audiogramWidth = option.audiogramHeight * 0.92857;
 
 		// Canvas variables
-		var xLabels = ['125', '250', '500', '1k', '2k', '4k', '8k'],
-		    yLabels = ['-10', '0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100', '110', '120'];
+		var
+			xLabels = ['125', '250', '500', '1k', '2k', '4k', '8k'],
+	    yLabels = ['-10', '0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100', '110', '120']
+	 	;
 
 		// Audiometric variables
-		var frequencies = ['t125', 't180', 't250', 't375', 't500', 't750', 't1k', 't1500', 't2k', 't3k', 't4k', 't6k', 't8k'],
-		    thresholds  = ['-10', '-5', '0', '5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '60', '65', '70', '75', '80', '85', '90', '95', '100', '105', '110', '115', '120'];
+		var
+			frequencies = ['t125', 't180', 't250', 't375', 't500', 't750', 't1k', 't1500', 't2k', 't3k', 't4k', 't6k', 't8k'],
+		  thresholds  = ['-10', '-5', '0', '5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '60', '65', '70', '75', '80', '85', '90', '95', '100', '105', '110', '115', '120']
+		;
 
 		// Audiometric data object w/ empty values
 		var audiometricData = {
@@ -173,9 +177,11 @@
 		};
 
 		// Patient information
-		var patient     = $(this).attr('id'),
-		    appointment = $(this).attr('data-appointment'),
-			audiogram   = $(this).attr('data-audiogram');
+		var
+			patient     = $(this).attr('id'),
+	    appointment = $(this).attr('data-appointment'),
+			audiogram   = $(this).attr('data-audiogram')
+		;
 
 		// Images to be used for audiometric data points
 		var icon = {
@@ -244,7 +250,8 @@
 		 **/
 		Canvas = function() {
 			/** Private properties and methods **/
-			var firstRun = true,
+			var
+				firstRun = true,
 				ctx,
 				previous = {
 					x : false,
@@ -253,8 +260,8 @@
 				current = {
 					x : false,
 					y : false,
-				};
-
+				}
+			;
 
 			/**
 			 * Creates the canvas and injects it into the DOM after the data source table
@@ -279,7 +286,7 @@
 					return false;
 				}
 				firstRun = false;
-			}
+			};
 
 			/**
 			 * Sets a border around the entire canvas and puts the gradient in place
@@ -302,22 +309,26 @@
 				// Render a rectangle filled by our gradient
 				ctx.fillStyle = gradient;
 				ctx.fillRect(option.xOffset, option.yOffset, option.audiogramWidth, option.audiogramHeight - option.yOffset * 2);
-			}
+			};
 
 			/**
 			 * Sets up the audiogram grid lines
 			 **/
 			var drawGrid = function() {
-				var verticalLines = 6,
-					horizontalLines = 14;
+				var
+					verticalLines = 6,
+					horizontalLines = 14
+				;
 
 				// Line styling
 				ctx.lineWidth = 1;
 				ctx.strokeStyle = '#000000';
 
 				// Horizontal lines
-				var xStart = option.xOffset,
-					xEnd = option.xOffset + option.audiogramWidth;
+				var
+					xStart = option.xOffset,
+					xEnd = option.xOffset + option.audiogramWidth
+				;
 
 				for (i = 0; i <= horizontalLines; i++) {
 					// Begin line
@@ -339,8 +350,10 @@
 				}
 
 				// Vertical lines
-				var yStart = option.yOffset,
-					yEnd = option.audiogramHeight - option.yOffset;
+				var
+					yStart = option.yOffset,
+					yEnd = option.audiogramHeight - option.yOffset
+				;
 
 				for (j = 0; j <= verticalLines; j++) {
 					// See comments for horizontal lines if this is unclear; it's exactly the same process.
@@ -352,12 +365,12 @@
 					ctx.lineTo(x, yEnd);
 					ctx.stroke();
 				}
-			}
+			};
 
 			/**
 			 * Puts labels on the x- and y-axes
 			 **/
-			 var drawLabels = function() {
+		 	var drawLabels = function() {
 				ctx.font = "12px 'arial'";
 				ctx.fillStyle = '#000000';
 
@@ -372,7 +385,7 @@
 					var yStart = (j * (option.audiogramHeight / (yLabels.length))) + option.yOffset;
 					ctx.fillText(yLabels[j], option.xOffset / 3, yStart);
 				}
-			}
+			};
 
 			/**
 			 * Draws lines connecting data points
@@ -416,13 +429,13 @@
 						ctx.stroke();
 					}
 				}
-			}
+			};
 
 			/** Public properties and methods **/
 			return {
 				/**
-				 * Draws the canvas.  Will insert it into the DOM if not there already
-				 **/
+					* Draws the canvas.  Will insert it into the DOM if not there already
+					**/
 				draw : function() {
 					// If called by audiogram.main() set up the canvas first
 					if (firstRun) {init();}
@@ -431,15 +444,14 @@
 					drawGrid();
 					drawLabels();
 				},
-
 				/**
-				 * Handels calculating the intended plot point based on actual user-click location
-				 *
-				 * @param  float    click event's x-coordinate
-				 * @param  float    click event's y-coordinate
-				 * @param  object   image to be drawn
-				 * @return void
-				 **/
+					* Handels calculating the intended plot point based on actual user-click location
+					*
+					* @param  float    click event's x-coordinate
+					* @param  float    click event's y-coordinate
+					* @param  object   image to be drawn
+					* @return void
+					**/
 				plot : function(x, y, ear, transducer, masking, response) {
 					if (ear != 'soundfield') {
 						var img = icon[ear][transducer][(masking) ? 'masked' : 'unmasked'][(response) ? 'response' : 'noResponse'];
@@ -470,8 +482,8 @@
 			var firstRun = true;
 
 			/**
-			 * Parses through the html table with the audiometric data for our audiogram object
-			 **/
+				* Parses through the html table with the audiometric data for our audiogram object
+				**/
 			var parseTable = function() {
 				// Iterate through each table row
 				$('#'+patient+' > tbody > tr').each(function() {
@@ -480,14 +492,16 @@
 					var cells = $(this).children();
 
 					// The first cell is the frequency, the rest are our data
-					var frequency = $(cells.get(0)).text(),
-					    rightAir  = $(cells.get(1)).text(),
-					    rightBone = $(cells.get(2)).text(),
-					    leftAir   = $(cells.get(3)).text(),
-					    leftBone  = $(cells.get(4)).text(),
-					    sfua      = $(cells.get(5)).text(),
-					    sfa       = $(cells.get(6)).text(),
-					    sfci      = $(cells.get(7)).text();
+					var
+						frequency = $(cells.get(0)).text(),
+				    rightAir  = $(cells.get(1)).text(),
+				    rightBone = $(cells.get(2)).text(),
+				    leftAir   = $(cells.get(3)).text(),
+				    leftBone  = $(cells.get(4)).text(),
+				    sfua      = $(cells.get(5)).text(),
+				    sfa       = $(cells.get(6)).text(),
+				    sfci      = $(cells.get(7)).text()
+				  ;
 
 					// If no data, the cell text will be empty - otherwise, put the number in our data object
 					audiometricData.right.air[frequency]          = (rightAir)  ? rightAir  : false;
@@ -501,28 +515,30 @@
 			};
 
 			/**
-			 * Gets the intersection nearest to the provided coordinates
-			 *
-			 * @param  int    click event's x-coordinate
-			 * @param  int    click event's y-coordinate
-			 * @return object
-			 **/
+				* Gets the intersection nearest to the provided coordinates
+				*
+				* @param  int    click event's x-coordinate
+				* @param  int    click event's y-coordinate
+				* @return object
+				**/
 			var getNearestIntersection = function(x, y) {
-				var verticalLines = 12,
-				    horizontalLines = 28,
-				    sizey = option.audiogramHeight / horizontalLines,
-				    sizex = option.audiogramWidth / verticalLines,
+				var
+					verticalLines = 12,
+			    horizontalLines = 28,
+			    sizey = option.audiogramHeight / horizontalLines,
+			    sizex = option.audiogramWidth / verticalLines,
 
-				    // First we need to find the rectangle where the click happened
-				    iX = parseInt(x / sizex),
-				    iY = parseInt(y / sizey),
+			    // First we need to find the rectangle where the click happened
+			    iX = parseInt(x / sizex),
+			    iY = parseInt(y / sizey),
 
-				    // Then we need to find the closest corner
-				    quadrantX = parseInt((x % sizex) / (sizex / 2)),
-				    quadrantY = parseInt((y % sizey) / (sizey / 2)),
+			    // Then we need to find the closest corner
+			    quadrantX = parseInt((x % sizex) / (sizex / 2)),
+			    quadrantY = parseInt((y % sizey) / (sizey / 2)),
 
-				    x1 = (iX + quadrantX) * sizex,
-				    y1 = (iY + quadrantY) * sizey;
+			    x1 = (iX + quadrantX) * sizex,
+			    y1 = (iY + quadrantY) * sizey
+			  ;
 
 				return {x : x1, y : y1};
 			};
@@ -535,10 +551,12 @@
 			 * @return void
 			 **/
 			var xyToThreshold = function(x, y) {
-				var verticalLines = 12,
+				var
+					verticalLines = 12,
 					horizontalLines = 28,
 					sizey = option.audiogramHeight / horizontalLines,
-					sizex = option.audiogramWidth / verticalLines;
+					sizex = option.audiogramWidth / verticalLines
+				;
 
 				var maskTag = (selection.masking)  ? '-m' : '',
 				    respTag = (selection.response) ? '' : '-nr';
@@ -556,15 +574,17 @@
 			 * @return object   coordinate object (obj.x, obj.y)
 			 **/
 			var thresholdToXY = function(frequency, threshold) {
-				var verticalLines = 12,
+				var
+					verticalLines = 12,
 					horizontalLines = 28,
 					sizey = option.audiogramHeight / horizontalLines,
 					sizex = option.audiogramWidth / verticalLines,
 					x = (frequencies.indexOf(frequency) + 1)  * sizex,
-					y = (thresholds.indexOf(threshold) + 1) * sizey;
+					y = (thresholds.indexOf(threshold) + 1) * sizey
+				;
 
 				return getNearestIntersection(Math.round(x), Math.round(y));
-			}
+			};
 
 			/**
 			 * Plots from our data object (audiometricData) onto the grid
@@ -626,7 +646,6 @@
 						alert('Royce should not be seeing this: ' + err);
 					}
 				}
-
 			};
 
 			/** Public properties and methods **/
@@ -662,7 +681,7 @@
 				/**
 				 * Saves data to the database via AJAX call
 				 **/
-				 save : function() {
+			 	save : function() {
 					// jQuery ajax handler
 					$.ajax({
 						// set request parameters
@@ -745,7 +764,7 @@
 				$('#button_save').click(function(e) {
 					Data.save();
 				});
-			}
+			};
 
 			var earSpecificButtons = function() {
 				$('#button_left').click(function() {
@@ -771,7 +790,7 @@
 				$('#button_masked').click(function() {
 					selection.masking = true;
 				});
-			}
+			};
 
 			var soundfieldButtons = function() {
 				$('#button_unaided').click(function() {
@@ -788,7 +807,7 @@
 					selection.ear = 'soundfield';
 					selection.transducer = 'ci';
 				});
-			}
+			};
 
 			return {
 				bind : function() {
@@ -796,8 +815,10 @@
 					$(canvas).bind('click', function(e) {
 
 						// (x, y) of mouse cursor at click; compensated to get coordinates relative to canvas's (0, 0)
-						var x = e.clientX - canvas.offsetLeft - canvas.offsetParent.offsetLeft + window.pageXOffset,
-							y = e.clientY - canvas.offsetTop  - canvas.offsetParent.offsetTop + window.pageYOffset;
+						var
+							x = e.clientX - canvas.offsetLeft - canvas.offsetParent.offsetLeft + window.pageXOffset,
+							y = e.clientY - canvas.offsetTop  - canvas.offsetParent.offsetTop + window.pageYOffset
+						;
 
 						// If on the audiogram
 						if (x <= option.audiogramWidth + option.xOffset
@@ -837,7 +858,7 @@
 						fn();
 					}
 				}
-			}
+			};
 
 			// Function called each time one of the icon images is loaded; Data.plot() called once the count arguemnt is reached
 			// TODO: change to 23 once no reponse icons are made
