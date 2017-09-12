@@ -611,7 +611,9 @@
 										var masking = (threshold.match(/\-m/)) ? true : false;
 
 										// Store the int value (removes no response and masking flags)
-										threshold = threshold.split('-')[0];
+										threshold = parseInt(threshold.split('-')[0]);
+										threshold += 5;
+										threshold = threshold.toString();
 									}
 									else {
 										var masking = false;
