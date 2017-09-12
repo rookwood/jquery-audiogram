@@ -276,7 +276,6 @@
 				canvas = $('#audiogram-'+patient).get(0);
 				canvas.width  = option.cvWidth;
 				canvas.height = option.cvHeight;
-
 				// Set 2d rendering context
 				ctx = canvas.getContext('2d');
 
@@ -337,7 +336,7 @@
 					// Calculate our y-coordinate (parentheses simply to make it easy to read, not necessary per order of operations)
 					// Adding 0.5px is necessary to avoid anti-aliasing artifact from the canvas rendering engine
 					// See http://developer.mozilla.org/en/Canvas_tutorial/Applying_styles_and_colors
-					var y = (i * (option.audiogramHeight / horizontalLines)) + 0.5 - option.yOffset;
+					var y = (i * (option.audiogramHeight / horizontalLines)) + 0.5 + option.yOffset;
 
 					// Line start
 					ctx.moveTo(xStart, y);
@@ -352,7 +351,7 @@
 				// Vertical lines
 				var
 					yStart = option.yOffset,
-					yEnd = option.audiogramHeight - option.yOffset
+					yEnd = option.audiogramHeight + option.yOffset
 				;
 
 				for (j = 0; j <= verticalLines; j++) {
