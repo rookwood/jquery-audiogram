@@ -42,8 +42,8 @@
 
 		// Canvas variables
 		var
-			xLabels = ['0,125', '0,25', '0,5', '1', '2', '4', '8', '(Khz)'],
-    	yLabels = ['-10', '0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100', '110', '120']
+			xLabels = ['0,125', '', '0,25', '', '0,5', '0,75', '1', '1,5', '2', '3', '4', '6', '8', '(Khz)', ''],
+    	yLabels = ['-10', '0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100', '110', '120', '130']
 	 	;
 
 		// Audiometric variables
@@ -382,7 +382,7 @@
 
 				// y-axis labels
 				for (j = 0; j < yLabels.length; j++) {
-					var yStart = (j * (option.audiogramHeight / (yLabels.length))) + option.yOffset + discount;
+					var yStart = (j * (option.audiogramHeight / (yLabels.length - 1))) + option.yOffset + discount;
 					ctx.fillText(yLabels[j], option.xOffset / 3, yStart);
 				}
 			};
