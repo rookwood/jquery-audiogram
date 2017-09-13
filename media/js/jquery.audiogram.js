@@ -13,8 +13,8 @@
 
 		// Default settings
 		var defaults = {
-			cvHeight : 600,
-			cvWidth : 600,
+			cvHeight : 610,
+			cvWidth : 610,
 			xOffset : 40,
 			yOffset : 40,
 			newGraph : false,
@@ -38,7 +38,7 @@
 		option.audiogramHeight = option.cvHeight - (option.yOffset + 5);
 
 		// Aspect ratio based on UTMG audiogram
-		option.audiogramWidth = option.audiogramHeight * 0.92857;
+		option.audiogramWidth = option.cvWidth - (option.xOffset + 5);
 
 		// Canvas variables
 		var
