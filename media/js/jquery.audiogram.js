@@ -332,6 +332,11 @@
 				for (i = 0; i <= horizontalLines; i++) {
 					// Begin line
 					ctx.beginPath();
+					ctx.lineWidth = '1';
+
+					if (i == 0 || i == horizontalLines) {
+						ctx.lineWidth = '2';
+					}
 
 					// Calculate our y-coordinate (parentheses simply to make it easy to read, not necessary per order of operations)
 					// Adding 0.5px is necessary to avoid anti-aliasing artifact from the canvas rendering engine
@@ -355,8 +360,18 @@
 				;
 
 				for (j = 0; j <= verticalLines; j++) {
+
+					if (j === 2 || j === 4) {
+						continue;
+					}
+
 					// See comments for horizontal lines if this is unclear; it's exactly the same process.
 					ctx.beginPath();
+					ctx.lineWidth = '1';
+
+					if (j == 0 || j == verticalLines) {
+						ctx.lineWidth = '2';
+					}
 
 					var x = (j * (option.audiogramWidth / verticalLines)) + 0.5 + option.xOffset;
 
