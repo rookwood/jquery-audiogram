@@ -329,11 +329,34 @@
 					xEnd = option.xOffset + option.audiogramWidth
 				;
 
+				var dashLegth = option.audiogramWidth / verticalLines / 4.54;
+				var dashInterval = dashLegth + 0.5;
+
 				for (i = 0; i <= horizontalLines; i++) {
+
 					// Begin line
 					ctx.beginPath();
+
+					if (i === 3) {
+						var yNow 		= (i * (option.audiogramHeight / horizontalLines)) + 0.5 + option.yOffset;
+						var yNext 	= ((i + 1) * (option.audiogramHeight / horizontalLines)) + 0.5 + option.yOffset;
+						var yNormal = (yNow + ((yNext - yNow) /2));
+
+						ctx.setLineDash([dashLegth, dashInterval]);
+						ctx.moveTo(xStart, yNow);
+						ctx.lineTo(xEnd, yNow);
+						ctx.stroke();
+
+						ctx.beginPath();
+						ctx.setLineDash([]);
+						ctx.moveTo(xStart, yNormal);
+						ctx.lineTo(xEnd, yNormal);
+						ctx.stroke();
+						continue;
+					}
+
 					ctx.lineWidth = '1';
-					ctx.setLineDash([7, 7]);
+					ctx.setLineDash([dashLegth, dashInterval]);
 
 					if (
 						i == 0 ||
@@ -381,7 +404,7 @@
 					// See comments for horizontal lines if this is unclear; it's exactly the same process.
 					ctx.beginPath();
 					ctx.lineWidth = '1';
-					ctx.setLineDash([7, 7]);
+					ctx.setLineDash([dashLegth, dashInterval]);
 
 					if (j == 0 || j == verticalLines) {
 						ctx.lineWidth = '2';
