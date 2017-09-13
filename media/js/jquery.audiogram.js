@@ -333,9 +333,22 @@
 					// Begin line
 					ctx.beginPath();
 					ctx.lineWidth = '1';
+					ctx.setLineDash([7, 7]);
 
-					if (i == 0 || i == horizontalLines) {
+					if (
+						i == 0 ||
+						i == 1 ||
+						i == (horizontalLines - 3) ||
+						i == horizontalLines
+					) {
 						ctx.lineWidth = '2';
+						if (
+							i == 1 ||
+							i == (horizontalLines - 3)
+						) {
+							ctx.lineWidth = '1';
+						}
+						ctx.setLineDash([]);
 					}
 
 					// Calculate our y-coordinate (parentheses simply to make it easy to read, not necessary per order of operations)
@@ -368,9 +381,11 @@
 					// See comments for horizontal lines if this is unclear; it's exactly the same process.
 					ctx.beginPath();
 					ctx.lineWidth = '1';
+					ctx.setLineDash([7, 7]);
 
 					if (j == 0 || j == verticalLines) {
 						ctx.lineWidth = '2';
+						ctx.setLineDash([]);
 					}
 
 					var x = (j * (option.audiogramWidth / verticalLines)) + 0.5 + option.xOffset;
