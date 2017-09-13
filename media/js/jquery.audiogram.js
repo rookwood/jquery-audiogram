@@ -406,7 +406,8 @@
 			 * Draws lines connecting data points
 			 **/
 			var dataLine = function(x, y, ear, transducer) {
-				ctx.lineWidth = 1;
+
+				ctx.lineWidth = '2';
 
 				// If first point entered, we don't need a line yet
 				if (current.x === false) {
