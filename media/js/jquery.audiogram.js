@@ -320,7 +320,7 @@
 				;
 
 				// Line styling
-				ctx.lineWidth = 1;
+				ctx.lineWidth = '1';
 				ctx.strokeStyle = '#000000';
 
 				// Horizontal lines
