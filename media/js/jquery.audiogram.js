@@ -424,7 +424,7 @@
 			 * Puts labels on the x- and y-axes
 			 **/
 		 	var drawLabels = function() {
-				ctx.font = "bold 12px 'arial'";
+				ctx.font = "20px 'arial'";
 				ctx.fillStyle = '#000000';
 
 				// x-axis labels
@@ -440,7 +440,7 @@
 				for (j = 0; j < yLabels.length; j++) {
 					var discount = 3;
 					var yStart = (j * (option.audiogramHeight / (yLabels.length - 1))) + option.yOffset + discount;
-					ctx.fillText(yLabels[j], option.xOffset / 3, yStart);
+					ctx.fillText(yLabels[j], (option.xOffset / 3) - 14, yStart + 3);
 				}
 			};
 
