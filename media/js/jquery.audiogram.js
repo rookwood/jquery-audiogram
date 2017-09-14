@@ -308,6 +308,7 @@
 				// Render a rectangle filled by our gradient
 				ctx.fillStyle = gradient;
 				ctx.fillRect(option.xOffset, option.yOffset, option.audiogramWidth, option.audiogramHeight - option.yOffset * 2);
+				ctx.scale(0.5, 0.5);
 			};
 
 			/**
